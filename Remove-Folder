@@ -1,0 +1,23 @@
+<#
+Script: 	Remove folders with certain name
+Date:		01-10-2015
+Author:		Bart Tacken
+#>
+
+[string]$DateStr = (Get-Date).ToString("s").Replace(":","-") # +"_" # Easy sortable date string
+Start-Transcript ('c:\windows\temp\' + "$Datestr" + '_Remove_OLD_homedir_folders.log') # Start logging  
+
+#Variable
+$UsersDir = "E:\Data\Users\*"		#Variabele voor directory Users (met profielen en homedir data)
+$DirName = "*_old"
+
+#Script
+# Get Folders with $Dirname
+$Folders = Get-ChildItem $Usersdir | where { $_.name -like "*_OLD" }
+
+#Cycle through each folder and remove
+ForEach ($Folder in $Folders) {
+    #Write-Host $($Folder.Fullname)
+    Remove-Item -Path $Folder.FullName -Recurse -Force -Verbose
+}
+stop-transcript
